@@ -42,10 +42,10 @@
           </b-menu-list>
 
           <b-menu-list label="Sites">
-              <div class="field" :key="site.name" v-for="site of sites">
-                <b-checkbox size="is-large" v-model="selectedSites" :native-value="site.id">{{ site.name }}</b-checkbox>
-              </div>
-              <b-button type="is-primary" class="is-fullwidth">Save</b-button>
+            <div class="field" :key="site.name" v-for="site of sites">
+              <b-checkbox size="is-large" v-model="selectedSites" :native-value="site.id">{{ site.name }}</b-checkbox>
+            </div>
+            <b-button type="is-primary" class="is-fullwidth">Save</b-button>
           </b-menu-list>
         </b-menu>
       </div>
@@ -80,10 +80,10 @@ export default {
   },
 
   computed: {
-    sites(){
+    sites() {
       return this.$store.state.sites
     },
-    tags(){
+    tags() {
       return this.$store.state.tags
     },
     storeSelectedSites() {
@@ -95,7 +95,7 @@ export default {
     value: function (newVal) {
       this.isOpen = newVal;
     },
-    storeSelectedSites(newVal){
+    storeSelectedSites(newVal) {
       this.selectedSites = newVal
     }
   },
