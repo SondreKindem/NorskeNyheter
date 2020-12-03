@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 id="no-sites-warn" class="is-size-3">No sites selected</h3>
+    <h3 v-if="$store.state.selectedSites.length <= 0" id="no-sites-warn" class="is-size-3">No sites selected</h3>
     <bricks
         ref="bricks"
         :data="data"
@@ -62,7 +62,7 @@ export default {
         if (!isReset) {
           this.page++;
         }
-        fetch("https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=1,2,3,4,5,6&page=" + this.page)
+        fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}`)
             .then((response) => response.json())
             .then((jsonData) => {
                   const data = jsonData.data;
@@ -88,6 +88,19 @@ export default {
     imgLoaded(){
       // TODO: this might be very taxing when there are more articles
       this.$nextTick(() => this.$refs.bricks.resize().pack())
+    }
+  },
+
+  computed: {
+    selectedSites() {
+      return this.$store.state.selectedSites
+    }
+  },
+
+  watch: {
+    selectedSites() {
+      // If the selected sites change, get new articles
+      this.fetchData(true)
     }
   },
 

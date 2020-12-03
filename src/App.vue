@@ -45,10 +45,14 @@ export default {
     },
   },
   mounted() {
+    const savedTags = JSON.parse(localStorage.getItem("selectedTags")) ?? [];
+    const savedSites = JSON.parse(localStorage.getItem("selectedSites")) ?? [];
+
+    this.$store.commit('setSelectedTags', savedTags)
+    this.$store.commit('setSelectedSites', savedSites)
+
     this.$store.dispatch('fetchSites');
     this.$store.dispatch('fetchTags');
-
-    this.$store.commit('setSelectedTags', [1, 2, 3, 4])
   }
 }
 </script>

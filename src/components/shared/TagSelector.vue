@@ -40,7 +40,7 @@ export default {
 
   computed: {
     selTags() {
-      return this.$store.state.selectedTags
+      return this.$store.state.selectedTags ?? []
     }
   },
 }

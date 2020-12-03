@@ -42,12 +42,10 @@
           </b-menu-list>
 
           <b-menu-list label="Sites">
-            <b-menu-list>
               <div class="field" :key="site.name" v-for="site of sites">
                 <b-checkbox size="is-large" v-model="selectedSites" :native-value="site.id">{{ site.name }}</b-checkbox>
               </div>
               <b-button type="is-primary" class="is-fullwidth">Save</b-button>
-            </b-menu-list>
           </b-menu-list>
         </b-menu>
       </div>
@@ -71,9 +69,13 @@ export default {
   },
   methods: {
     close() {
+      // Send selected sites to store
+      this.$store.commit('setSelectedSites', this.selectedSites)
+      // Make sure store state is saved
       this.$store.dispatch('saveState')
+      // Notify parent sidebar closed
       this.$emit("input", false)
-    },
+    }
   },
   computed: {
     sites(){
