@@ -63,10 +63,11 @@ export default {
   data() {
     return {
       isOpen: this.value,
-      selectedSites: [],
+      selectedSites: this.storeSelectedSites,
       windowWidth: null
     }
   },
+
   methods: {
     close() {
       // Send selected sites to store
@@ -77,19 +78,28 @@ export default {
       this.$emit("input", false)
     }
   },
+
   computed: {
     sites(){
       return this.$store.state.sites
     },
     tags(){
       return this.$store.state.tags
+    },
+    storeSelectedSites() {
+      return this.$store.state.selectedSites
     }
   },
+
   watch: {
     value: function (newVal) {
       this.isOpen = newVal;
+    },
+    storeSelectedSites(newVal){
+      this.selectedSites = newVal
     }
   },
+
   mounted() {
     // TODO: is eventlistener on resize viable?
     this.windowWidth = window.innerWidth;
