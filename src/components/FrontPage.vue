@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h3 v-if="$store.state.selectedSites.length <= 0" id="no-sites-warn" class="is-size-3">No sites selected</h3>
+    <h3 v-if="!loading && $store.state.selectedSites.length <= 0" class="missing-data-warn is-size-3">Ingen aviser
+      valgt.</h3>
+    <h3 v-else-if="!loading && data.length <= 0" class="missing-data-warn is-size-3">Kunne ikke finne noen artikler.
+      Sjekk innstillingene dine.</h3>
+    <b-loading is-full-page v-model="loading" :can-cancel="true"></b-loading>
     <bricks
         ref="bricks"
         :data="data"
