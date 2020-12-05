@@ -12,9 +12,11 @@
         <div class="card article">
           <div class="card-content">
             <h4 class="title" :style="scope.item.style">{{ scope.item.title }}</h4>
-            <img v-if="scope.item.image" @load="imgLoaded" class="card-image" :src="scope.item.image" :alt="scope.item.title">
+            <img v-if="scope.item.image" @load="imgLoaded" class="card-image" :src="scope.item.image"
+                 :alt="scope.item.title">
             <p class="is-6 subtitle ">{{ scope.item.date }}</p>
             <p>{{ scope.item.site }}</p>
+            <p>{{ scope.item.category }}</p>
             <p class="content" v-html="scope.item.text"></p>
           </div>
         </div>
@@ -59,10 +61,14 @@ export default {
       return new Promise(resolve => {
         this.loading = true
 
-        if (!isReset) {
+        if (isReset) {
+          this.page = 1;
+          window.scrollTo(0, 0);
+        } else {
           this.page++;
         }
-        fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}`)
+
+        fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}&categories=${this.selectedTags.join()}`)
             .then((response) => response.json())
             .then((jsonData) => {
                   const data = jsonData.data;
@@ -73,19 +79,21 @@ export default {
                     this.data.push(...data)
                   }
                   resolve(data)
+                  this.done()
                 },
                 (err) => {
                   console.log(err)
+                  this.done()
                 })
       })
     },
 
     done() {
       this.loading = false
-      this.$refs.bricks.pack()
+      // this.$refs.bricks.pack()
     },
 
-    imgLoaded(){
+    imgLoaded() {
       // TODO: this might be very taxing when there are more articles
       this.$nextTick(() => this.$refs.bricks.resize().pack())
     }
@@ -94,14 +102,25 @@ export default {
   computed: {
     selectedSites() {
       return this.$store.state.selectedSites
+    },
+    selectedTags() {
+      return this.$store.state.selectedTags
+    },
+    selectedSitesAndTags() {
+      // Hack for watching both tags and selectedSites TODO: do by sending event from parent, or by using vue3 to watch multiple
+      return [this.$store.state.selectedTags, this.$store.state.selectedSites]
     }
   },
 
   watch: {
-    selectedSites() {
-      // If the selected sites change, get new articles
-      this.fetchData(true)
-    }
+    selectedSitesAndTags: {
+      handler: function () {
+        // If the selected sites change, get new articles
+        this.fetchData(true)
+      },
+      deep: true,
+      immediate: true
+    },
   },
 
   created() {
@@ -115,7 +134,7 @@ export default {
   width: 400px;
 }
 
-#no-sites-warn{
+#no-sites-warn {
   text-align: center;
 }
 
