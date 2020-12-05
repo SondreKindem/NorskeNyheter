@@ -74,11 +74,15 @@ export default {
 
   methods: {
     close() {
-      // Send selected sites to store
-      this.$store.commit('setSelectedSites', this.selectedSites)
-      this.$store.commit('setSelectedTags', this.selectedTags)
-      // Make sure store state is saved
-      this.$store.dispatch('saveState')
+      // Only update if there was a change
+      if (!isEqual(this.selectedTags, this.storeSelectedTags) || !isEqual(this.selectedSites, this.storeSelectedSites)) {
+        // Send selected sites to store
+        this.$store.commit('setSelectedSites', this.selectedSites)
+        this.$store.commit('setSelectedTags', this.selectedTags)
+        // Make sure store state is saved
+        this.$store.dispatch('saveState')
+      }
+
       // Notify parent sidebar closed
       this.$emit("input", false)
     }
