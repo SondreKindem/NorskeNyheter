@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       page: 1,
+      lastPage: null,
       loading: true,
       data: [],
       sizes: [
@@ -66,32 +67,39 @@ export default {
 
     fetchData(isReset) {
       return new Promise(resolve => {
-        this.loading = true
-
-        if (isReset) {
-          this.page = 1;
-          window.scrollTo(0, 0);
+        if (!isReset && this.lastPage && this.page >= this.lastPage) {
+          // Do not try to fetch data if we reached the last page
+          resolve();
         } else {
-          this.page++;
-        }
 
-        fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}&categories=${this.selectedTags.join()}`)
-            .then((response) => response.json())
-            .then((jsonData) => {
-                  const data = jsonData.data;
-                  console.log(data);
-                  if (isReset) {
-                    this.data = data
-                  } else {
-                    this.data.push(...data)
-                  }
-                  resolve(data)
-                  this.done()
-                },
-                (err) => {
-                  console.log(err)
-                  this.done()
-                })
+          this.loading = true
+
+          if (isReset) {
+            this.page = 1;
+            window.scrollTo(0, 0);
+          } else {
+            this.page++;
+          }
+
+          fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}&categories=${this.selectedTags.join()}`)
+              .then((response) => response.json())
+              .then((jsonData) => {
+                    const data = jsonData.data;
+                    console.log(data);
+                    this.lastPage = jsonData.last_page;
+                    if (isReset) {
+                      this.data = data
+                    } else {
+                      this.data.push(...data)
+                    }
+                    resolve(data)
+                    this.done()
+                  },
+                  (err) => {
+                    console.log(err)
+                    this.done()
+                  })
+        }
       })
     },
 
@@ -141,7 +149,7 @@ export default {
   width: 400px;
 }
 
-#no-sites-warn {
+.missing-data-warn {
   text-align: center;
 }
 
