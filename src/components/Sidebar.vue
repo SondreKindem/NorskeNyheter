@@ -8,17 +8,17 @@
         @close="close"
         v-model="isOpen"
     >
-      <div class="p-1">
+      <div class="p-4">
         <img
             src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
             alt="Lightweight UI components for Vue.js based on Bulma"
         />
-        <b-menu>
-          <b-menu-list label="Menu">
-            <b-menu-item icon="information-outline" label="About"></b-menu-item>
+        <b-menu class="mb-5">
+          <b-menu-list label="Innstillinger">
+            <b-menu-item icon="information-outline" label="Om NN"></b-menu-item>
             <b-menu-item icon="compare">
               <template slot="label" slot-scope="props">
-                Theme
+                Utseende
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
               </template>
               <b-menu-item icon="account" label="Users"></b-menu-item>
@@ -37,15 +37,17 @@
             </b-menu-item>
           </b-menu-list>
 
-          <b-menu-list label="Categories">
+          <b-menu-list label="Kategorier">
+            <p class="has-text-grey has-text-weight-light light mb-4 is-size-6">
+              Det er ikke alle sider som har gode systemer for kategorier, så nøyaktigheten kan variere.
+            </p>
             <TagSelector :tags="tags" v-model="selectedTags"></TagSelector>
           </b-menu-list>
 
-          <b-menu-list label="Sites">
+          <b-menu-list label="Aviser">
             <div class="field" :key="site.name" v-for="site of sites">
               <b-checkbox size="is-large" v-model="selectedSites" :native-value="site.id">{{ site.name }}</b-checkbox>
             </div>
-            <b-button type="is-primary" class="is-fullwidth">Save</b-button>
           </b-menu-list>
         </b-menu>
       </div>
@@ -55,6 +57,7 @@
 
 <script>
 import TagSelector from "@/components/shared/TagSelector";
+import {isEqual} from "lodash-es";
 
 export default {
   name: "Sidebar",
@@ -120,5 +123,8 @@ export default {
 </script>
 
 <style scoped>
-
+.menu-label {
+  font-size: 1em;
+  margin: .8em 0;
+}
 </style>
