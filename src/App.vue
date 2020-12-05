@@ -1,6 +1,7 @@
 <!--suppress CssInvalidFunction -->
 <template>
   <div id="app">
+    <link rel="stylesheet" href="">
     <Sidebar v-model="sidebarOpen"/>
 
     <FrontPage/>
@@ -45,8 +46,8 @@ export default {
     },
   },
   mounted() {
-    const savedTags = JSON.parse(localStorage.getItem("selectedTags")) ?? [];
-    const savedSites = JSON.parse(localStorage.getItem("selectedSites")) ?? [];
+    const savedTags = JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2];
+    const savedSites = JSON.parse(localStorage.getItem("selectedSites")) ?? [1,4,5];
 
     this.$store.commit('setSelectedTags', savedTags)
     this.$store.commit('setSelectedSites', savedSites)
@@ -139,6 +140,10 @@ $link-focus-border: $primary;
 // Component customization
 $sidebar-width: 350px;
 
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
 // Other app css
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -147,8 +152,4 @@ $sidebar-width: 350px;
   color: #2c3e50;
   margin-top: 60px;
 }
-
-// Import Bulma and Buefy styles
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
 </style>
