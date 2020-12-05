@@ -38,7 +38,7 @@
           </b-menu-list>
 
           <b-menu-list label="Categories">
-            <TagSelector :tags="tags"></TagSelector>
+            <TagSelector :tags="tags" v-model="selectedTags"></TagSelector>
           </b-menu-list>
 
           <b-menu-list label="Sites">
@@ -64,6 +64,7 @@ export default {
     return {
       isOpen: this.value,
       selectedSites: this.storeSelectedSites,
+      selectedTags: this.storeSelectedTags,
       windowWidth: null
     }
   },
@@ -72,6 +73,7 @@ export default {
     close() {
       // Send selected sites to store
       this.$store.commit('setSelectedSites', this.selectedSites)
+      this.$store.commit('setSelectedTags', this.selectedTags)
       // Make sure store state is saved
       this.$store.dispatch('saveState')
       // Notify parent sidebar closed
@@ -88,6 +90,9 @@ export default {
     },
     storeSelectedSites() {
       return this.$store.state.selectedSites
+    },
+    storeSelectedTags() {
+      return this.$store.state.selectedTags
     }
   },
 
@@ -97,11 +102,15 @@ export default {
     },
     storeSelectedSites(newVal) {
       this.selectedSites = newVal
+    },
+    storeSelectedTags(newVal) {
+      this.selectedTags = [...newVal]
     }
   },
 
   mounted() {
     // TODO: is eventlistener on resize viable?
+    // Change windowWidth on resize, so we can set the sidebar to be fullwidth on small screens
     this.windowWidth = window.innerWidth;
     window.addEventListener('resize', () => {
       this.windowWidth = window.innerWidth;

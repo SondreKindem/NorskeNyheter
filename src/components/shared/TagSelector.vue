@@ -4,7 +4,7 @@
         v-for="tag of tags"
         :key="tag.id"
         @click.native="toggleTag(tag.id)"
-        :type="selTags.includes(tag.id) ? 'is-primary' : 'is-primary is-light'"
+        :type="selectedTags.includes(tag.id) ? 'is-primary' : 'is-primary is-light'"
         class="toggle-tag is-rounded is-small"
     >
       {{ tag.name }}
@@ -20,29 +20,32 @@ export default {
     tags: {
       type: Array,
       required: true
-    }
+    },
+    value: {}
   },
 
   data() {
     return {
+      selectedTags: this.value
     }
   },
 
   methods: {
     toggleTag(id) {
-      if (this.selTags.includes(id)) {
-        this.$store.commit('removeSelectedTags', id)
+      if (this.selectedTags.includes(id)) {
+        this.selectedTags.splice(this.selectedTags.indexOf(id), 1);
       } else {
-        this.$store.commit('addSelectedTags', id)
+        this.selectedTags.push(id)
       }
+      this.$emit("input", this.selectedTags)
     }
   },
 
-  computed: {
-    selTags() {
-      return this.$store.state.selectedTags ?? []
+  watch: {
+    value(newVal) {
+      this.selectedTags = newVal
     }
-  },
+  }
 }
 </script>
 
