@@ -12,8 +12,11 @@
         <div class="card article">
           <div class="card-content">
             <h4 class="title" :style="scope.item.style">{{ scope.item.title }}</h4>
-            <img v-if="scope.item.image" @load="imgLoaded" class="card-image" :src="scope.item.image"
-                 :alt="scope.item.title">
+            <img
+                v-if="scope.item.image" @load="imgLoaded"
+                class="card-image" :src="scope.item.image"
+                :alt="scope.item.title"
+            >
             <p class="is-6 subtitle ">{{ scope.item.date }}</p>
             <p>{{ scope.item.site }}</p>
             <p>{{ scope.item.category }}</p>
