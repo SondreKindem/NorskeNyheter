@@ -50,5 +50,6 @@ export default {
 .toggle-tag:hover {
   cursor: pointer;
   background-color: lightgray !important;
+  color: black;
 }
 </style>
