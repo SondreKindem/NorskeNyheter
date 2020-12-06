@@ -7,8 +7,8 @@ export default new Vuex.Store({
     state: {
         sites: [],
         tags: [],
-        selectedSites: [],
-        selectedTags: [],
+        selectedSites: JSON.parse(localStorage.getItem("selectedSites")) ?? [1,4,5],
+        selectedTags: JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2],
     },
     mutations: {
         setSites(state, sites){
@@ -28,8 +28,10 @@ export default new Vuex.Store({
             state.selectedSites.splice(state.selectedSites.indexOf(id), 1);
         },
 
-        setSelectedTags(state, sites) {
-            state.selectedTags = sites
+        setSelectedTags(state, tags) {
+            console.log("Set tags")
+            console.log(tags)
+            state.selectedTags = tags
         },
         addSelectedTags(state, id) {
             state.selectedTags.push(id)

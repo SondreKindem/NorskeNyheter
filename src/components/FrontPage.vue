@@ -34,6 +34,7 @@
 
 <script>
 import Bricks from 'vue-bricks'
+import axios from 'axios';
 
 export default {
   name: "FrontPage",
@@ -65,42 +66,47 @@ export default {
       this.$nextTick(() => this.$refs.bricks.pack())
     },
 
-    fetchData(isReset) {
-      return new Promise(resolve => {
-        if (!isReset && this.lastPage && this.page >= this.lastPage) {
-          // Do not try to fetch data if we reached the last page
-          resolve();
+    async fetchData(isReset) {
+      if (!isReset && this.lastPage && this.page >= this.lastPage) {
+        // Do not try to fetch data if we reached the last page
+        return null;
+      } else {
+
+        this.loading = true
+
+        if (isReset) {
+          this.page = 1;
+          window.scrollTo(0, 0);
         } else {
-
-          this.loading = true
-
-          if (isReset) {
-            this.page = 1;
-            window.scrollTo(0, 0);
-          } else {
-            this.page++;
-          }
-
-          fetch(`https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}&categories=${this.selectedTags.join()}`)
-              .then((response) => response.json())
-              .then((jsonData) => {
-                    const data = jsonData.data;
-                    console.log(data);
-                    this.lastPage = jsonData.last_page;
-                    if (isReset) {
-                      this.data = data
-                    } else {
-                      this.data.push(...data)
-                    }
-                    resolve(data)
-                    this.done()
-                  },
-                  (err) => {
-                    console.log(err)
-                    this.done()
-                  })
+          this.page++;
         }
-      })
+
+        const url = `https://sonkin.no/nyheter/api/v1/articles?limit=15&sites=${this.selectedSites.join()}&page=${this.page}&categories=${this.selectedTags.join()}`
+
+        return axios.get(url).then(
+            (response) => {
+              const data = response.data;
+              const articleData = data.data;
+
+              console.log(articleData);
+              console.log(url);
+
+              this.lastPage = data.last_page;
+
+              if (isReset) {
+                this.data = articleData
+              } else {
+                this.data.push(...articleData)
+              }
+
+              this.done()
+            },
+            (err) => {
+              console.log(err)
+              this.done()
+            }
+        )
+      }
     },
 
     done() {
@@ -136,10 +142,6 @@ export default {
       deep: true,
       immediate: true
     },
-  },
-
-  created() {
-    this.fetchData(true)
   }
 }
 </script>

@@ -12,7 +12,6 @@ import VueBricks from 'vue-bricks'
 
 Vue.config.productionTip = false
 
-
 Vue.use(Buefy)
 Vue.use(VueBricks)
 

@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       isOpen: this.value,
-      selectedSites: this.storeSelectedSites,
-      selectedTags: this.storeSelectedTags,
+      selectedSites: this.$store.state.selectedSites,
+      selectedTags: this.$store.state.selectedTags,
       windowWidth: null
     }
   },

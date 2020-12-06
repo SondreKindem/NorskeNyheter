@@ -34,24 +34,21 @@ export default {
     FrontPage,
     Sidebar
   },
+
   data() {
     return {
       sidebarOpen: false
     }
   },
+
   methods: {
     openSidebar() {
       console.log("open")
       this.sidebarOpen = true;
     },
   },
+
   mounted() {
-    const savedTags = JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2];
-    const savedSites = JSON.parse(localStorage.getItem("selectedSites")) ?? [1,4,5];
-
-    this.$store.commit('setSelectedTags', savedTags)
-    this.$store.commit('setSelectedSites', savedSites)
-
     this.$store.dispatch('fetchSites');
     this.$store.dispatch('fetchTags');
   }
