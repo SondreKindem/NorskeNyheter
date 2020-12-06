@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from "axios";
 
 Vue.use(Vuex)
 
@@ -7,14 +8,14 @@ export default new Vuex.Store({
     state: {
         sites: [],
         tags: [],
-        selectedSites: JSON.parse(localStorage.getItem("selectedSites")) ?? [1,4,5],
+        selectedSites: JSON.parse(localStorage.getItem("selectedSites")) ?? [1, 4, 5],
         selectedTags: JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2],
     },
     mutations: {
-        setSites(state, sites){
+        setSites(state, sites) {
             state.sites = sites
         },
-        setTags(state, tags){
+        setTags(state, tags) {
             state.tags = tags
         },
 
@@ -46,24 +47,22 @@ export default new Vuex.Store({
             window.localStorage.setItem("selectedTags", JSON.stringify(state.selectedTags))
         },
         fetchSites({commit}) {
-            fetch("https://sonkin.no/nyheter/api/v1/sites")
-                .then((response) => response.json())
-                .then((jsonData) => {
-                        commit('setSites', jsonData)
-                    },
-                    (err) => {
-                        console.log(err);
-                    })
+            axios.get("https://sonkin.no/nyheter/api/v1/sites").then(
+                (response) => {
+                    commit('setSites', response.data)
+                },
+                (err) => {
+                    console.log(err);
+                })
         },
         fetchTags({commit}) {
-            fetch("https://sonkin.no/nyheter/api/v1/categories")
-                .then((response) => response.json())
-                .then((jsonData) => {
-                        commit('setTags', jsonData)
-                    },
-                    (err) => {
-                        console.log(err);
-                    })
+            axios.get("https://sonkin.no/nyheter/api/v1/categories").then(
+                (response) => {
+                    commit('setTags', response.data)
+                },
+                (err) => {
+                    console.log(err);
+                })
         }
     }
 })
