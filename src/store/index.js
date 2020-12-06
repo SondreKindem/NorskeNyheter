@@ -30,8 +30,6 @@ export default new Vuex.Store({
         },
 
         setSelectedTags(state, tags) {
-            console.log("Set tags")
-            console.log(tags)
             state.selectedTags = tags
         },
         addSelectedTags(state, id) {
