@@ -149,4 +149,11 @@ $sidebar-width: 350px;
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.title > a:hover {
+ color: $primary
+}
+.title > a {
+  color: #212529
+}
 </style>
