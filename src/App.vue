@@ -1,6 +1,6 @@
 <!--suppress CssInvalidFunction -->
 <template>
-  <div id="app">
+  <div id="app" :class="{dark: darkMode}">
     <link rel="stylesheet" href="">
     <Sidebar v-model="sidebarOpen"/>
 
@@ -46,6 +46,12 @@ export default {
       console.log("open")
       this.sidebarOpen = true;
     },
+  },
+
+  computed: {
+    darkMode() {
+      return this.$store.state.darkMode
+    }
   },
 
   mounted() {
@@ -141,19 +147,74 @@ $sidebar-width: 350px;
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
+:root {
+  --darkmode-text: #e3e3e3;
+  --darkmode-background: #212529;
+  --darkmode-hover: #272e32;
+}
+
 // Other app css
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  padding-top: 60px;
 }
 
 .title > a:hover {
- color: $primary
+  color: $primary
 }
+
 .title > a {
   color: #212529
+}
+
+// DARK-MODE STUFF
+
+.dark .title > a {
+  color: var(--darkmode-text)
+}
+
+.dark .title > a:hover {
+  color: $primary
+}
+
+.dark {
+  color: lightgray;
+  background: var(--darkmode-background);
+}
+
+.dark svg {
+  fill: var(--darkmode-text) !important;
+}
+
+.dark header {
+  border-color: var(--darkmode-text) !important;
+}
+
+.dark nav {
+  background-color: var(--darkmode-background);
+  color: var(--darkmode-text)
+}
+
+.dark .navbar-item {
+  color: var(--darkmode-text)
+}
+
+.dark .navbar-item:hover {
+  background-color: var(--darkmode-hover);
+}
+
+.dark .b-sidebar .sidebar-content {
+  background-color: var(--darkmode-background)!important;
+}
+
+.dark .menu-item > a {
+  color: var(--darkmode-text);
+}
+
+.dark .menu-item > a:hover:not(.is-active) {
+  background: var(--darkmode-hover);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div :class="{dark: darkMode}">
     <header>
-      <h1 id="title">
+      <h1 id="title" style="fill: lightgray">
         <svg style="height: 1em" viewBox="0 0 92.59 26.47">
           <g aria-label="Norske Nyheter"
              transform="translate(-88.7 -157.11) scale(2.9595)">
@@ -190,6 +190,9 @@ export default {
     },
     isOutlined(){
       return this.$store.state.isOutlined
+    },
+    darkMode(){
+      return this.$store.state.darkMode
     }
   },
 
@@ -220,6 +223,10 @@ export default {
   border-radius: 0;
 }
 
+.title > a {
+  color: #212529
+}
+
 .missing-data-warn {
   text-align: center;
 }
@@ -245,6 +252,14 @@ header svg {
 /* Hide the breakpoint by default */
 header br {
   display: none;
+}
+
+.dark .card-content {
+  background-color: var(--darkmode-background);
+  color: var(--darkmode-text);
+}
+.dark .outlined {
+  border: 1px solid lightgray;
 }
 
 @media only screen and (max-width: 1190px) {

@@ -1,28 +1,28 @@
 <template>
   <section>
     <b-sidebar
-        type="is-light"
         :fullheight="true"
         :overlay="true"
         :fullwidth="windowWidth < 400"
         @close="close"
         v-model="isOpen"
     >
-      <div class="p-4">
+      <div class="p-4" :class="{dark: storeDarkMode}">
         <img
             src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
             alt="Lightweight UI components for Vue.js based on Bulma"
         />
-        <b-menu class="mb-5">
-          <b-menu-list label="Innstillinger">
-            <b-menu-item icon="information-outline" label="Om NN"></b-menu-item>
-            <b-menu-item icon="compare">
+        <b-menu class="mb-5" >
+          <b-menu-list label="Innstillinger" >
+            <b-menu-item icon="information-outline" label="Om NN" class="menu-item"></b-menu-item>
+
+            <b-menu-item icon="compare" class="menu-item">
               <template slot="label" slot-scope="props">
                 Utseende
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
               </template>
 
-              <b-menu-item icon="account" expanded>
+              <b-menu-item icon="account" expanded class="menu-item">
                 <template slot="label" slot-scope="props">
                   Artikler
                   <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
@@ -33,17 +33,8 @@
                 </div>
               </b-menu-item>
 
-              <b-menu-item icon="cellphone-link">
-                <template slot="label">
-                  Devices
-                  <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
-                    <b-icon icon="dots-vertical" slot="trigger"></b-icon>
-                    <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
-                  </b-dropdown>
-                </template>
-              </b-menu-item>
+              <b-switch v-model="darkMode" class="mt-2 mb-2">Nattmodus</b-switch>
+
             </b-menu-item>
           </b-menu-list>
 
@@ -80,6 +71,7 @@ export default {
       selectedTags: this.$store.state.selectedTags,
       isOutlined: this.$store.state.isOutlined,
       isSquare: this.$store.state.isSquare,
+      darkMode: this.$store.state.darkMode,
       windowWidth: null
     }
   },
@@ -87,13 +79,14 @@ export default {
   methods: {
     close() {
       // Only update if there was a change
-      if (!isEqual(this.selectedTags, this.storeSelectedTags) || !isEqual(this.selectedSites, this.storeSelectedSites) || this.isOutlined !== this.$store.state.isOutlined || this.isSquare !== this.$store.state.isSquare) {
+      if (!isEqual(this.selectedTags, this.storeSelectedTags) || !isEqual(this.selectedSites, this.storeSelectedSites) || this.isOutlined !== this.$store.state.isOutlined || this.isSquare !== this.$store.state.isSquare || this.darkMode !== this.$store.state.darkMode) {
         // Send selected sites to store
         this.$store.commit('setSelectedSites', this.selectedSites)
         this.$store.commit('setSelectedTags', this.selectedTags)
 
         this.$store.commit('setOutlined', this.isOutlined)
         this.$store.commit('setSquare', this.isSquare)
+        this.$store.commit('setDarkMode', this.darkMode)
         // Make sure store state is saved
         this.$store.dispatch('saveState')
       }
@@ -118,6 +111,9 @@ export default {
     },
     storeIsOutlined() {
       return this.$store.state.isOutlined
+    },
+    storeDarkMode(){
+      return this.$store.state.darkMode
     }
   },
 
@@ -149,4 +145,13 @@ export default {
   font-size: 1em;
   margin: .8em 0;
 }
+
+.dark .menu-item > a {
+  background: red;
+  color: red;
+}
+.dark .b-checkbox:hover {
+  color: white;
+}
+
 </style>

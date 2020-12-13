@@ -12,6 +12,7 @@ export default new Vuex.Store({
         selectedTags: JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2],
         isOutlined: JSON.parse(localStorage.getItem("isOutlined")) ?? false,
         isSquare: JSON.parse(localStorage.getItem("isSquare")) ?? false,
+        darkMode: JSON.parse(localStorage.getItem("darkMode")) ?? false,
     },
     mutations: {
         setSites(state, sites) {
@@ -41,11 +42,14 @@ export default new Vuex.Store({
             state.selectedTags.splice(state.selectedTags.indexOf(id), 1);
         },
 
-        setOutlined(state, isOutlined){
+        setOutlined(state, isOutlined) {
             state.isOutlined = isOutlined
         },
-        setSquare(state, isSquare){
+        setSquare(state, isSquare) {
             state.isSquare = isSquare
+        },
+        setDarkMode(state, darkMode) {
+            state.darkMode = darkMode
         }
     },
     actions: {
@@ -54,6 +58,7 @@ export default new Vuex.Store({
             localStorage.setItem("selectedTags", JSON.stringify(state.selectedTags))
             localStorage.setItem("isOutlined", JSON.stringify(state.isOutlined))
             localStorage.setItem("isSquare", JSON.stringify(state.isSquare))
+            localStorage.setItem("darkMode", JSON.stringify(state.darkMode))
         },
         fetchSites({commit}) {
             axios.get("https://sonkin.no/nyheter/api/v1/sites").then(
