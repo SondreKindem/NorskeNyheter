@@ -22,10 +22,12 @@
       </h1>
     </header>
 
-    <h3 v-if="!loading && $store.state.selectedSites.length <= 0" class="missing-data-warn is-size-3">Ingen aviser
-      valgt.</h3>
-    <h3 v-else-if="!loading && data.length <= 0" class="missing-data-warn is-size-3">Kunne ikke finne noen artikler.
-      Sjekk innstillingene dine.</h3>
+    <h3 v-if="!loading && $store.state.selectedSites.length <= 0" class="missing-data-warn is-size-3">
+      Ingen aviser valgt.
+    </h3>
+    <h3 v-else-if="!loading && data.length <= 0" class="missing-data-warn is-size-3">
+      Kunne ikke finne noen artikler. Sjekk innstillingene dine.
+    </h3>
 
     <b-loading is-full-page v-model="loading" :can-cancel="true"></b-loading>
 
@@ -39,22 +41,24 @@
       <template slot-scope="scope">
         <div class="card article">
           <div class="card-content">
-            <h4 class="title" :style="scope.item.style">
-              <a :href="scope.item.link" target="_blank">{{ scope.item.title }}</a>
+            <h4 class="title mb-5" :style="scope.item.style">
+              <a :href="scope.item.link" target="_blank" class="m-0">{{ scope.item.title }}</a>
             </h4>
+            <p class="is-6 subtitle mb-2 has-text-weight-semibold has-text-grey">{{ howLongAgo(scope.item.date) }}</p>
+            <figure v-if="scope.item.image" class="image">
+              <a :href="scope.item.link" target="_blank">
+                <img
+                    @load="imgLoaded"
+                    :src="scope.item.image"
+                    :alt="scope.item.title"
+                >
+              </a>
+            </figure>
 
-            <img
-                v-if="scope.item.image" @load="imgLoaded"
-                class="card-image" :src="scope.item.image"
-                :alt="scope.item.title"
-            >
-
-            <p class="is-6 subtitle ">{{ scope.item.date }}</p>
-
-            <div class="tags is-justify-content-space-between has-text-weight-bold">
+            <div class="tags is-justify-content-space-between has-text-weight-bold mt-3 mb-0">
               <div>
-                <b-tag>{{ $store.state.tags[scope.item.category - 1].name }}</b-tag>
-                <b-tag type="is-warning" v-if="scope.item.paywall">premium</b-tag>
+                <b-tag v-if="$store.state.tags[scope.item.category - 1]">{{ $store.state.tags[scope.item.category - 1].name }}</b-tag>
+                <b-tag v-if="scope.item.paywall" type="is-warning">premium</b-tag>
               </div>
               <Logo :id="scope.item.site"/>
             </div>
@@ -70,7 +74,10 @@
 <script>
 import Bricks from 'vue-bricks'
 import axios from 'axios';
+import {DateTime} from 'luxon';
 import Logo from "@/components/shared/Logo";
+
+const dateOptions = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'};
 
 export default {
   name: "FrontPage",
@@ -154,6 +161,14 @@ export default {
     imgLoaded() {
       // TODO: this might be very taxing when there are more articles
       this.$nextTick(() => this.$refs.bricks.resize().pack())
+    },
+
+    stringToDate(dateString) {
+      return new Date(dateString).toLocaleString("no-NO", dateOptions)
+    },
+
+    howLongAgo(string) {
+      return DateTime.fromFormat(string, 'yyyy-MM-dd HH:mm:ss', { zone: 'Europe/Oslo', locale: 'no-NO' }).toRelative()
     }
   },
 
@@ -220,6 +235,7 @@ header br {
     font-size: 5em;
     border-bottom: 10px solid;
   }
+
   header svg:nth-child(1) {
     margin-right: 1.2rem;
   }
@@ -231,9 +247,11 @@ header br {
     font-size: 5em;
     border-bottom: 10px solid;
   }
+
   header svg:nth-child(1) {
     margin-right: 0;
   }
+
   /* Now display the breakpoint */
   header br {
     display: block;
