@@ -39,7 +39,7 @@
         @reach="fetchData(false)"
     >
       <template slot-scope="scope">
-        <div class="card article">
+        <div class="card article" :class="{outlined: isOutlined, square: isSquare}">
           <div class="card-content">
             <h4 class="title mb-5" :style="scope.item.style">
               <a :href="scope.item.link" target="_blank" class="m-0">{{ scope.item.title }}</a>
@@ -57,13 +57,15 @@
 
             <div class="tags is-justify-content-space-between has-text-weight-bold mt-3 mb-0">
               <div>
-                <b-tag v-if="$store.state.tags[scope.item.category - 1]">{{ $store.state.tags[scope.item.category - 1].name }}</b-tag>
+                <b-tag v-if="$store.state.tags[scope.item.category - 1]">
+                  {{ $store.state.tags[scope.item.category - 1].name }}
+                </b-tag>
                 <b-tag v-if="scope.item.paywall" type="is-warning">premium</b-tag>
               </div>
               <Logo :id="scope.item.site"/>
             </div>
 
-            <p class="content" v-html="scope.item.text"></p>
+            <p class="content is-family-primary" v-html="scope.item.text"></p>
           </div>
         </div>
       </template>
@@ -100,7 +102,7 @@ export default {
         {mq: '1680px', columns: 4, gutter: 15},
         {mq: '1730px', columns: 4, gutter: 30},
         {mq: '2200px', columns: 5, gutter: 30}
-      ]
+      ],
     }
   },
   methods: {
@@ -168,7 +170,7 @@ export default {
     },
 
     howLongAgo(string) {
-      return DateTime.fromFormat(string, 'yyyy-MM-dd HH:mm:ss', { zone: 'Europe/Oslo', locale: 'no-NO' }).toRelative()
+      return DateTime.fromFormat(string, 'yyyy-MM-dd HH:mm:ss', {zone: 'Europe/Oslo', locale: 'no-NO'}).toRelative()
     }
   },
 
@@ -182,6 +184,12 @@ export default {
     selectedSitesAndTags() {
       // Hack for watching both tags and selectedSites TODO: do by sending event from parent, or by using vue3 to watch multiple
       return [this.$store.state.selectedTags, this.$store.state.selectedSites]
+    },
+    isSquare(){
+      return this.$store.state.isSquare
+    },
+    isOutlined(){
+      return this.$store.state.isOutlined
     }
   },
 
@@ -201,6 +209,15 @@ export default {
 <style scoped>
 .article {
   width: 400px;
+}
+
+.outlined {
+  border: 1px solid gray;
+  box-shadow: none;
+}
+
+.square {
+  border-radius: 0;
 }
 
 .missing-data-warn {

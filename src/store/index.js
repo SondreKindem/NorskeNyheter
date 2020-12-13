@@ -10,6 +10,8 @@ export default new Vuex.Store({
         tags: [],
         selectedSites: JSON.parse(localStorage.getItem("selectedSites")) ?? [1, 4, 5],
         selectedTags: JSON.parse(localStorage.getItem("selectedTags")) ?? [1, 2],
+        isOutlined: JSON.parse(localStorage.getItem("isOutlined")) ?? false,
+        isSquare: JSON.parse(localStorage.getItem("isSquare")) ?? false,
     },
     mutations: {
         setSites(state, sites) {
@@ -37,12 +39,21 @@ export default new Vuex.Store({
         },
         removeSelectedTags(state, id) {
             state.selectedTags.splice(state.selectedTags.indexOf(id), 1);
+        },
+
+        setOutlined(state, isOutlined){
+            state.isOutlined = isOutlined
+        },
+        setSquare(state, isSquare){
+            state.isSquare = isSquare
         }
     },
     actions: {
         saveState({state}) {
-            window.localStorage.setItem("selectedSites", JSON.stringify(state.selectedSites))
-            window.localStorage.setItem("selectedTags", JSON.stringify(state.selectedTags))
+            localStorage.setItem("selectedSites", JSON.stringify(state.selectedSites))
+            localStorage.setItem("selectedTags", JSON.stringify(state.selectedTags))
+            localStorage.setItem("isOutlined", JSON.stringify(state.isOutlined))
+            localStorage.setItem("isSquare", JSON.stringify(state.isSquare))
         },
         fetchSites({commit}) {
             axios.get("https://sonkin.no/nyheter/api/v1/sites").then(

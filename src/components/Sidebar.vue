@@ -21,7 +21,18 @@
                 Utseende
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
               </template>
-              <b-menu-item icon="account" label="Users"></b-menu-item>
+
+              <b-menu-item icon="account" expanded>
+                <template slot="label" slot-scope="props">
+                  Artikler
+                  <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
+                </template>
+                <div class="is-flex is-flex-direction-column">
+                  <b-switch v-model="isOutlined" class="mb-2">Outlined</b-switch>
+                  <b-switch v-model="isSquare">Square</b-switch>
+                </div>
+              </b-menu-item>
+
               <b-menu-item icon="cellphone-link">
                 <template slot="label">
                   Devices
@@ -33,7 +44,6 @@
                   </b-dropdown>
                 </template>
               </b-menu-item>
-              <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
             </b-menu-item>
           </b-menu-list>
 
@@ -68,6 +78,8 @@ export default {
       isOpen: this.value,
       selectedSites: this.$store.state.selectedSites,
       selectedTags: this.$store.state.selectedTags,
+      isOutlined: this.$store.state.isOutlined,
+      isSquare: this.$store.state.isSquare,
       windowWidth: null
     }
   },
@@ -75,10 +87,13 @@ export default {
   methods: {
     close() {
       // Only update if there was a change
-      if (!isEqual(this.selectedTags, this.storeSelectedTags) || !isEqual(this.selectedSites, this.storeSelectedSites)) {
+      if (!isEqual(this.selectedTags, this.storeSelectedTags) || !isEqual(this.selectedSites, this.storeSelectedSites) || this.isOutlined !== this.$store.state.isOutlined || this.isSquare !== this.$store.state.isSquare) {
         // Send selected sites to store
         this.$store.commit('setSelectedSites', this.selectedSites)
         this.$store.commit('setSelectedTags', this.selectedTags)
+
+        this.$store.commit('setOutlined', this.isOutlined)
+        this.$store.commit('setSquare', this.isSquare)
         // Make sure store state is saved
         this.$store.dispatch('saveState')
       }
@@ -100,6 +115,9 @@ export default {
     },
     storeSelectedTags() {
       return this.$store.state.selectedTags
+    },
+    storeIsOutlined() {
+      return this.$store.state.isOutlined
     }
   },
 
