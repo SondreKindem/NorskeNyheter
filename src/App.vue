@@ -217,4 +217,5 @@ $sidebar-width: 350px;
 .dark .menu-item > a:hover:not(.is-active) {
   background: var(--darkmode-hover);
 }
+
 </style>

@@ -27,20 +27,22 @@
             </g>
           </svg>
         </h1>
-        <b-menu class="mb-5" >
-          <b-menu-list label="Innstillinger" >
+        <b-menu class="mb-5">
+          <b-menu-list label="Innstillinger">
             <b-menu-item icon="information-outline" label="Om NN" class="menu-item"></b-menu-item>
 
             <b-menu-item icon="compare" class="menu-item">
               <template slot="label" slot-scope="props">
                 Utseende
-                <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
+                <b-icon v-show="props.expanded" class="is-pulled-right" icon="menu-down"></b-icon>
+                <b-icon v-show="!props.expanded" class="is-pulled-right" icon="menu-up"></b-icon>
               </template>
 
               <b-menu-item icon="text-box" expanded class="menu-item">
                 <template slot="label" slot-scope="props">
                   Artikler
-                  <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
+                  <b-icon v-show="props.expanded" class="is-pulled-right" icon="menu-down"></b-icon>
+                  <b-icon v-show="!props.expanded" class="is-pulled-right" icon="menu-up"></b-icon>
                 </template>
                 <div class="is-flex is-flex-direction-column">
                   <b-switch :rounded="false" v-model="isOutlined" class="mb-2">Outlined</b-switch>
@@ -77,6 +79,7 @@ import {isEqual} from "lodash-es";
 
 export default {
   name: "Sidebar",
+  // eslint-disable-next-line vue/no-unused-components
   components: {TagSelector},
   props: ['value'],
   data() {
@@ -87,7 +90,7 @@ export default {
       isOutlined: this.$store.state.isOutlined,
       isSquare: this.$store.state.isSquare,
       darkMode: this.$store.state.darkMode,
-      windowWidth: null
+      windowWidth: null,
     }
   },
 
@@ -127,7 +130,7 @@ export default {
     storeIsOutlined() {
       return this.$store.state.isOutlined
     },
-    storeDarkMode(){
+    storeDarkMode() {
       return this.$store.state.darkMode
     }
   },
@@ -164,6 +167,7 @@ export default {
 #sidebar-title {
   font-size: 5em;
 }
+
 #sidebar-title > svg {
   fill: #212529;
   color: #212529;
