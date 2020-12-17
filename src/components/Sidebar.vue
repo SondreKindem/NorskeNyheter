@@ -37,18 +37,18 @@
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
               </template>
 
-              <b-menu-item icon="account" expanded class="menu-item">
+              <b-menu-item icon="text-box" expanded class="menu-item">
                 <template slot="label" slot-scope="props">
                   Artikler
                   <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
                 </template>
                 <div class="is-flex is-flex-direction-column">
-                  <b-switch v-model="isOutlined" class="mb-2">Outlined</b-switch>
-                  <b-switch v-model="isSquare">Square</b-switch>
+                  <b-switch :rounded="false" v-model="isOutlined" class="mb-2">Outlined</b-switch>
+                  <b-switch :rounded="false" v-model="isSquare">Square</b-switch>
                 </div>
               </b-menu-item>
 
-              <b-switch v-model="darkMode" class="mt-2 mb-2">Nattmodus</b-switch>
+              <b-switch :rounded="false" v-model="darkMode" class="mt-2 mb-2">Nattmodus</b-switch>
 
             </b-menu-item>
           </b-menu-list>
