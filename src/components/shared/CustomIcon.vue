@@ -1,5 +1,5 @@
 <template>
-  <svg viewBox="0 0 24 24" style="width:24px;height:24px">
+  <svg viewBox="0 0 24 24">
     <path :d="renderIcon"></path>
   </svg>
 </template>
