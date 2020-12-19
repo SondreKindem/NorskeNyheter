@@ -28,7 +28,7 @@
         </h1>
         <b-menu class="mb-5">
           <b-menu-list label="Innstillinger">
-            <b-menu-item icon="information-outline" label="Om NN" class="menu-item"></b-menu-item>
+            <b-menu-item icon="information-outline" label="Om NN" class="menu-item" @click="aboutClicked"></b-menu-item>
 
             <b-menu-item icon="compare" class="menu-item">
               <template slot="label" slot-scope="props">
@@ -75,11 +75,15 @@
 <script>
 import TagSelector from "@/components/shared/TagSelector";
 import {isEqual} from "lodash-es";
+import About from "@/components/About";
+
+// TODO: swipe to open
+// TODO: Close with button
 
 export default {
   name: "Sidebar",
   // eslint-disable-next-line vue/no-unused-components
-  components: {TagSelector},
+  components: {TagSelector, About},
   props: ['value'],
   data() {
     return {
@@ -110,6 +114,15 @@ export default {
 
       // Notify parent sidebar closed
       this.$emit("input", false)
+    },
+
+    aboutClicked() {
+      this.$buefy.modal.open({
+        parent: this,
+        hasModalCard: true,
+        component: About,
+        trapFocus: true
+      })
     }
   },
 
