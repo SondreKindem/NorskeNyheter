@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card" style="width: auto">
+  <div class="modal-card" :class="{dark: darkMode}" style="width: auto">
     <header class="modal-card-head">
       <p class="modal-card-title">Om Norske Nyheter</p>
       <button
@@ -10,14 +10,18 @@
 
     <section class="modal-card-body">
       <h3 class="is-size-3">Generelt</h3>
-      <p>
+      <p class="mb-2">
         Norske nyheter er en liten webapp som lar deg oppdage nyheter fra akkurat de nyhetskildene du selv vil se. Med
         alle nyheter samlet på ett sted slipper man å hoppe fra side til side, og fra riksnyheter, til lokalavis.
       </p>
-      <p>
+      <p class="mb-2">
         Norske Nyheter lagrer bare titler og beskrivelser fra artiklene, og linker til artiklene på nyhetskildens
         nettside. I backenden kjøres et script som tråler for det meste avisenes rss feeds. Hvis det ikke finnes en rss
         feed, scrapes selve nettsiden.
+      </p>
+      <p class="mb-2">
+        Applikasjonen hostes på Github pages, og kildekoden kan hentes her: <a
+          href="https://github.com/SondreKindem/NorskeNyheter">https://github.com/SondreKindem/NorskeNyheter</a>
       </p>
 
       <h3 class="is-size-3">Fremtiden</h3>
@@ -69,15 +73,38 @@
         </div>
       </div>
     </section>
+
+    <footer class="modal-card-foot"></footer>
   </div>
 </template>
 
 <script>
 export default {
-  name: "About"
+  name: "About",
+  computed: {
+    darkMode() {
+      return this.$store.state.darkMode
+    }
+  },
 }
 </script>
 
 <style scoped>
+.dark .modal-card-head {
+  background-color: #1d2024;
+  border-bottom: 1px solid #161a1c !important;
+}
 
+.dark .modal-card-foot {
+  background-color: #1d2024;
+  border-top: 1px solid #161a1c;
+}
+
+.dark .modal-card-title {
+  color: var(--darkmode-text);
+}
+
+.dark .modal-card-body {
+  background-color: var(--darkmode-background);
+}
 </style>

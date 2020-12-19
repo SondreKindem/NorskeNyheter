@@ -218,6 +218,10 @@ $sidebar-width: 350px;
   background: var(--darkmode-hover);
 }
 
+.dark strong {
+  color: var(--darkmode-text);
+}
+
 // ICON STUFF
 
 // Set correct size for small icons
