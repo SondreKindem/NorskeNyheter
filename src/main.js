@@ -21,10 +21,10 @@ Vue.use(Buefy, {
     customIconPacks: {
         'customIcon': {
             sizes: {
-                "default": "lg",
-                "is-small": "1x",
-                "is-medium": "2x",
-                "is-large": "3x"
+                'default': 'is-size-5',
+                'is-small': 'is-size-1',
+                'is-medium': 'is-size-3',
+                'is-large': 'is-size-1'
             },
         },
     }

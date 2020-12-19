@@ -218,4 +218,24 @@ $sidebar-width: 350px;
   background: var(--darkmode-hover);
 }
 
+// ICON STUFF
+
+// Set correct size for small icons
+.icon.is-small {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+// Ensure icons in menu-items are centered and nicely spaced
+.menu-item a {
+  display: flex;
+  align-items: center;
+}
+.menu-item a > * {
+  margin-right: 5px;
+}
+.menu-item a .is-pulled-right {
+  // The right-hovered icon in a menu item
+  margin-left: auto;
+  order: 2;
+}
 </style>
